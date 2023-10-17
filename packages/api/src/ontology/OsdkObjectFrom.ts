@@ -17,6 +17,7 @@
 import type {
   OntologyDefinition,
   OsdkObjectPropertyType,
+  PrimaryKeyFrom,
   PropertyKeysFrom,
 } from "./Definition";
 
@@ -31,3 +32,13 @@ export type OsdkObjectFrom<
   & {
     __name: K;
   }; // TODO
+
+export type PrimaryKeyType<
+  TObjectType extends string,
+  TOntologyDefintion extends OntologyDefinition<TObjectType>,
+  TPrimaryKey extends PrimaryKeyFrom<TOntologyDefintion, TObjectType>,
+> = OsdkObjectPropertyType<
+  TOntologyDefintion["objects"][TObjectType]["properties"][
+    TPrimaryKey
+  ]
+>;

@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-import type { ObjectDefinition } from "@osdk/api";
+import type { Client } from "@osdk/api";
+import type { OntologyType } from "../OntologyType";
 
-export const Todo = {
-  apiName: "Todo",
-  primaryKey: "id",
-  properties: {
-    id: {
-      type: "double",
-    },
-    priority: {
-      type: "double",
-    },
-    complete: {
-      type: "boolean",
-    },
-    text: {
-      type: "string",
-    },
-  },
-  links: {},
-} satisfies ObjectDefinition<"Todo", "Todo">;
+export async function fetchEmployeePage(client: Client<OntologyType>) {
+  const result = await client.objectSet("Employee").fetchOneOrThrow();
+}

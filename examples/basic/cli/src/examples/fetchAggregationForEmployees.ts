@@ -23,6 +23,7 @@ import type { OntologyType } from "../OntologyType";
 export async function fetchAggregationForEmployees(
   client: Client<OntologyType>,
 ) {
+  client.objects.Employee;
   const result = await client.objectSet("Employee").aggregateOrThrow({
     select: {
       locationCity: "approximateDistinct",
