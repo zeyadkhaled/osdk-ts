@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import type { AggregationsResults, WhereClause } from "#client/query";
 import type {
   ObjectInfoFrom,
   ObjectTypesFrom,
   OntologyDefinition,
   OsdkObjectFrom,
   PropertyKeysFrom,
-} from "#ontology";
+} from "../../ontology";
 import type { PrimaryKeyType } from "../../ontology/OsdkObjectFrom";
 import { PrimaryKeyFrom } from "../../ontology/OsdkObjectFrom";
 import type { FetchPageOrThrowArgs } from "../object/fetchPageOrThrow";
 import type { PageResult } from "../PageResult";
+import type { AggregationsResults, WhereClause } from "../query";
 import type { AggregateOpts } from "../query/aggregations/AggregateOpts";
 import type { ResultOrError } from "../ResultOrError";
 import type { LinkTypesFrom } from "./LinkTypesFrom";
