@@ -38,6 +38,7 @@ const mockOntology = {
           type: "string",
         },
         id: {
+          isPrimaryKey: true,
           type: "double",
         },
         priority: {

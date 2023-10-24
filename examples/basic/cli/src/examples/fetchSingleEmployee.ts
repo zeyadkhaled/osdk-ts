@@ -18,8 +18,9 @@ import type { Client } from "@osdk/api";
 import type { OntologyType } from "../OntologyType";
 
 export async function fetchEmployeePage(client: Client<OntologyType>) {
-  const x: OntologyType = {};
-  x.objects.Employee.primaryKey;
-  const result = await client.objectSet("Employee").fetchOneOrThrow();
+  const result = await client.objectSet("Employee").fetchOneOrThrow("tName");
+  client.objectSet("Employee").where({
+    adUsername: "tName",
+  }).fetchOneOrThrow;
   result.adUsername;
 }

@@ -30,11 +30,6 @@ export type PropertyKeysFrom<
   K extends ObjectTypesFrom<O>,
 > = keyof ObjectInfoFrom<O, K>["properties"] & string;
 
-export type PrimaryKeyFrom<
-  O extends OntologyDefinition<any>,
-  K extends ObjectTypesFrom<O>,
-> = ObjectInfoFrom<O, K>["primaryKey"];
-
 export type PropertyDefinitionsFrom<
   O extends OntologyDefinition<any>,
   K extends ObjectTypesFrom<O>,
@@ -58,7 +53,6 @@ export interface ObjectDefinition<
   K extends string,
 > {
   apiName: N;
-  primaryKey: string;
   properties: Record<string, PropertyDefinition>;
   links: Record<string, LinkDefinition<K>>;
 }

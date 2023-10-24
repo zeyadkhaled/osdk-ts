@@ -18,10 +18,10 @@ import type { ObjectDefinition } from "@osdk/api";
 
 export const Todo = {
   apiName: "Todo",
-  primaryKey: "id",
   properties: {
     id: {
       type: "double",
+      isPrimaryKey: true,
     },
     priority: {
       type: "double",

@@ -15,19 +15,21 @@
  */
 
 import type {
+  ObjectTypesFrom,
   OntologyDefinition,
-  OsdkObjectPropertyType,
+  OsdkObjectFrom,
   PropertyKeysFrom,
-} from "./Definition";
+} from "../../ontology";
 
-export type OsdkObjectFrom<
-  K extends string,
-  T extends OntologyDefinition<K>,
-  L extends PropertyKeysFrom<T, K>,
-> =
-  & {
-    [P in L]: OsdkObjectPropertyType<T["objects"][K]["properties"][P]>;
-  }
-  & {
-    __name: K;
-  }; // TODO
+export async function getOneOrThrow<
+  TOntologyDefintion extends OntologyDefinition<any>,
+  TOntologyObject extends ObjectTypesFrom<TOntologyDefintion>,
+>(): Promise<
+  OsdkObjectFrom<
+    TOntologyObject,
+    TOntologyDefintion,
+    PropertyKeysFrom<TOntologyDefintion, TOntologyObject>
+  >
+> {
+  throw new Error("");
+}

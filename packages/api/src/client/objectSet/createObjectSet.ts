@@ -20,6 +20,7 @@ import type {
   OntologyDefinition,
   OsdkObjectFrom,
   OsdkObjectPropertyType,
+  PrimaryKeyTypeFromProperties,
   PropertyKeysFrom,
 } from "../../ontology";
 import { modernToLegacyWhereClause } from "../internal/conversions";
@@ -106,9 +107,7 @@ export function createObjectSet<
     },
     fetchOneOrThrow: function<
       L extends PropertyKeysFrom<O, K>,
-      const P extends OsdkObjectPropertyType<
-        O["objects"][K]["properties"][O["objects"][K]["primaryKey"]]
-      >,
+      const P extends PrimaryKeyTypeFromProperties<K, O>,
     >(primaryKey: P): Promise<OsdkObjectFrom<K, O, L>> {
       throw new Error("Function not implemented.");
     },

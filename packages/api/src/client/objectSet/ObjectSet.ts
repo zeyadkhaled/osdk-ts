@@ -19,10 +19,9 @@ import type {
   ObjectTypesFrom,
   OntologyDefinition,
   OsdkObjectFrom,
+  PrimaryKeyTypeFromProperties,
   PropertyKeysFrom,
 } from "../../ontology";
-import type { PrimaryKeyType } from "../../ontology/OsdkObjectFrom";
-import { PrimaryKeyFrom } from "../../ontology/OsdkObjectFrom";
 import type { FetchPageOrThrowArgs } from "../object/fetchPageOrThrow";
 import type { PageResult } from "../PageResult";
 import type { AggregationsResults, WhereClause } from "../query";
@@ -49,7 +48,7 @@ export interface BaseObjectSet<
 > {
   fetchOneOrThrow: <
     L extends PropertyKeysFrom<O, K>,
-    const P extends PrimaryKeyType<K, O>,
+    const P extends PrimaryKeyTypeFromProperties<K, O>,
   >(
     primaryKey: P,
   ) => Promise<OsdkObjectFrom<K, O, L>>;
