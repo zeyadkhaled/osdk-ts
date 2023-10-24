@@ -210,22 +210,6 @@ export function listActionTypes<TResponse>(
   );
 }
 
-const e = undefined;
-
-export function a(
-  b,
-  c,
-  d,
-) {
-  return b(
-    "GET",
-    `/v1/ontologies/${c}/actionTypes`,
-    e,
-    d,
-    e,
-  );
-}
-
 /**
  * Gets a specific action type with the given API name.
  *

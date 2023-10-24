@@ -53,7 +53,10 @@ export interface OntologyDefinition<K extends string> {
   };
 }
 
-export interface ObjectDefinition<N extends K, K extends string> {
+export interface ObjectDefinition<
+  N extends K,
+  K extends string,
+> {
   apiName: N;
   primaryKey: string;
   properties: Record<string, PropertyDefinition>;
@@ -66,6 +69,7 @@ export interface LinkDefinition<K extends string> {
 }
 export interface PropertyDefinition {
   readonly?: boolean;
+  isPrimaryKey?: boolean;
   displayName?: string;
   description?: string;
   type: keyof ValidPropertyTypes; // FIXME WHAT ARE THE TYPES

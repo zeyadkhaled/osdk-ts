@@ -18,17 +18,22 @@ import type {
   OntologyDefinition,
   OsdkObjectPropertyType,
   PropertyDefinition,
-  PropertyKeysFrom,
 } from "./Definition";
 
-export type OsdkObjectFrom<
-  K extends string,
-  T extends OntologyDefinition<K>,
-  L extends PropertyKeysFrom<T, K>,
-> =
-  & {
-    [P in L]: OsdkObjectPropertyType<T["objects"][K]["properties"][P]>;
-  }
-  & {
-    __name: K;
-  }; // TODO
+export type PrimaryKeyFromProperties<
+  TProperties extends Record<string, PropertyDefinition>,
+> = {
+  [K in keyof TProperties]: TProperties[K]["isPrimaryKey"] extends true ? K
+    : never;
+}[keyof TProperties];
+
+export type PrimaryKeyTypeFromProperties<
+  TObjectType extends string,
+  TOntologyDefintion extends OntologyDefinition<TObjectType>,
+> = OsdkObjectPropertyType<
+  TOntologyDefintion["objects"][TObjectType]["properties"][
+    PrimaryKeyFromProperties<
+      TOntologyDefintion["objects"][TObjectType]["properties"]
+    >
+  ]
+>;

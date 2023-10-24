@@ -25,6 +25,7 @@ export const Employee = {
     /** Username as stored in active directory */
     adUsername: {
       type: "string",
+      isPrimaryKey: true,
       nullable: false,
     },
     locationName: {
