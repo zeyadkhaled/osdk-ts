@@ -14,22 +14,42 @@
  * limitations under the License.
  */
 
-import type { OntologyDefinition, ThinClient } from "@osdk/api";
+import type {
+  ObjectTypesFrom,
+  OntologyDefinition,
+  ThinClient,
+} from "@osdk/api";
 import { createOpenApiRequest } from "@osdk/api";
 import { getObjectV2 } from "@osdk/gateway/requests";
+import type { SelectableProperties } from "../../../client/interfaces/utils/OmitProperties";
 import { convertWireToOsdkObject } from "../../../client/objects/convertWireToOsdkObject";
-import type { OntologyObject } from "../../baseTypes";
+import type { OsdkLegacyObjectFrom } from "../../../client/OsdkObject";
 import { GetObjectErrorHandler, handleGetObjectError } from "../ErrorHandlers";
 import type { GetObjectError } from "../Errors";
 import type { Result } from "../Result";
 import { wrapResult } from "./util/wrapResult";
 
-export async function getObject<T extends OntologyObject>(
-  client: ThinClient<OntologyDefinition<T["__apiName"]>>,
-  objectApiName: string,
-  primaryKey: T["__primaryKey"],
-  selectedProperties: ReadonlyArray<keyof T> = [],
-): Promise<Result<T, GetObjectError>> {
+export async function getObject<
+  O extends OntologyDefinition<any>,
+  K extends ObjectTypesFrom<O> & string,
+  T extends ReadonlyArray<
+    keyof SelectableProperties<OsdkLegacyObjectFrom<O, K>>
+  >,
+>(
+  client: ThinClient<OntologyDefinition<any>>,
+  objectApiName: K,
+  primaryKey: OsdkLegacyObjectFrom<O, K>["__primaryKey"],
+  selectedProperties?: T,
+): Promise<
+  Result<
+    T extends [] ? OsdkLegacyObjectFrom<O, K>
+      : Pick<
+        OsdkLegacyObjectFrom<O, K>,
+        T[number] | "__apiName" | "__primaryKey"
+      >,
+    GetObjectError
+  >
+> {
   return wrapResult(async () => {
     const object = await getObjectV2(
       createOpenApiRequest(client.stack, client.fetch),
@@ -37,14 +57,17 @@ export async function getObject<T extends OntologyObject>(
       objectApiName,
       primaryKey.toString(),
       {
-        select: selectedProperties.map(x => x.toString()),
+        select: selectedProperties
+          ? selectedProperties.map(x => x.toString())
+          : [],
       },
     );
 
+    // TODO: Fix me
     return convertWireToOsdkObject(
       client,
       objectApiName,
       object,
-    ) as unknown as T;
+    ) as unknown as any;
   }, e => handleGetObjectError(new GetObjectErrorHandler(), e, e.parameters));
 }

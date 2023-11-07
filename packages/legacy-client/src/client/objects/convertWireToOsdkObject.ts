@@ -93,14 +93,14 @@ function createPrototype<
 }
 
 export function convertWireToOsdkObject<
-  T extends ObjectTypesFrom<O> & string,
+  T extends ObjectTypesFrom<O>,
   O extends OntologyDefinition<any>,
 >(
   client: ThinClient<O>,
   apiName: T,
   obj: OntologyObjectV2,
 ): OsdkLegacyObjectFrom<O, T> {
-  const proto = getPrototype(client.ontology, apiName, client);
+  const proto = getPrototype(client.ontology, apiName as string, client);
   Object.setPrototypeOf(obj, proto);
   setPropertyAccessors<T, O>(client, apiName, obj);
 
@@ -108,7 +108,7 @@ export function convertWireToOsdkObject<
 }
 
 function setPropertyAccessors<
-  T extends ObjectTypesFrom<O> & string,
+  T extends ObjectTypesFrom<O>,
   O extends OntologyDefinition<any>,
 >(client: ThinClient<O>, apiName: T, obj: OntologyObjectV2) {
   for (

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { SelectableProperties } from "../../../client/interfaces/utils/OmitProperties";
 import type {
   GetObjectError,
   LoadObjectSetError,
@@ -24,7 +25,7 @@ import type { OntologyObject } from "../OntologyObject";
 
 export type FilteredPropertiesTerminalOperations<
   T extends OntologyObject,
-  V extends Array<keyof T>,
+  V extends ReadonlyArray<keyof SelectableProperties<T>>,
 > = {
   all(): Promise<
     Result<
@@ -45,7 +46,7 @@ export type FilteredPropertiesTerminalOperations<
 
 export type FilteredPropertiesTerminalOperationsWithGet<
   T extends OntologyObject,
-  V extends Array<keyof T>,
+  V extends ReadonlyArray<keyof SelectableProperties<T>>,
 > = FilteredPropertiesTerminalOperations<T, V> & {
   get(
     primaryKey: T["__primaryKey"],
