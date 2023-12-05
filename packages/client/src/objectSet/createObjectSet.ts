@@ -28,6 +28,7 @@ import type { AggregationClause, AggregationsResults } from "../query";
 import type { AggregateOpts } from "../query/aggregations/AggregateOpts";
 import type { LinkTypesFrom } from "./LinkTypesFrom";
 import type { BaseObjectSet, ObjectSet, ObjectSetOptions } from "./ObjectSet";
+import { WatcherWebsocket } from "./WatcherWebsocket";
 
 const searchAroundPrefix = "searchAround_";
 export function createObjectSet<
@@ -95,6 +96,11 @@ export function createObjectSet<
       opts?: ObjectSetOptions<O, O["objects"][K]["links"][T]["targetType"]>,
     ): ObjectSet<O, O["objects"][K]["links"][T]["targetType"]> {
       return createSearchAround(type)().where(opts?.$where ?? {});
+    },
+
+    subscribe(listener) {
+      const instance = WatcherWebsocket.getInstance(thinClient);
+      return instance.subscribe(this, listener);
     },
   };
 

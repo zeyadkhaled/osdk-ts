@@ -89,7 +89,7 @@ export interface BaseObjectSet<
   // watchAllLinks: boolean | undefined;
 
   // this can return success, error, or QOS
-  subscribe: (listener: ObjectSetListener) => () => void;
+  subscribe: (listener: ObjectSetListener<O, K>) => Promise<() => void>;
 }
 
 export interface ObjectSetOptions<
