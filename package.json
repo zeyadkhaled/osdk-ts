@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",
+    "@babel/plugin-syntax-import-attributes": "^7.23.3",
     "@babel/preset-typescript": "^7.22.15",
     "@changesets/cli": "^2.26.2",
     "@monorepolint/cli": "0.5.0-alpha.108",
@@ -39,7 +40,7 @@
     "tsconfig": "workspace:*",
     "tsup": "^7.2.0",
     "turbo": "^1.10.13",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.0",
     "vitest": "^0.34.6"
   },
   "dependencies": {

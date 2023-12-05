@@ -19,16 +19,27 @@ import {
   type OntologyDefinition,
   type ThinClient,
 } from "@osdk/api";
-import type { ConjureContext } from "conjure-lite";
 import WebSocket from "isomorphic-ws";
 import type { OsdkObject } from "..";
-import { createTemporaryObjectSet } from "../generated/object-set-service/api/ObjectSetService.mjs";
-import type { FoundryObject } from "../generated/object-set-watcher/object/FoundryObject.mjs";
-import { batchEnableWatcher } from "../generated/object-set-watcher/ObjectSetWatchService.mjs";
-import type { StreamMessage } from "../generated/object-set-watcher/StreamMessage.mjs";
 import { Deferred } from "./Deferred";
 import type { ObjectSet } from "./ObjectSet";
 import type { ObjectSetListener } from "./ObjectSetWatcher";
+
+import type { ConjureContext } from "conjure-lite" with {
+  "resolution-mode": "import",
+};
+
+import type {
+  FoundryObject,
+} from "../generated/object-set-watcher/object/FoundryObject.mjs" with {
+  "resolution-mode": "import",
+};
+
+import type {
+  StreamMessage,
+} from "../generated/object-set-watcher/StreamMessage.mjs" with {
+  "resolution-mode": "import",
+};
 
 export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
   static #instances = new WeakMap<ThinClient<any>, WatcherWebsocket<any>>();
@@ -70,6 +81,10 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
     listener: ObjectSetListener<O, K>,
   ): Promise<() => void> {
     // TODO more parallelism
+
+    const { createTemporaryObjectSet } = await import(
+      "../generated/object-set-service/api/ObjectSetService.mjs"
+    );
 
     const [temporaryObjectSet] = await Promise.all([
       // create a time-bounded object set representation for watching
@@ -201,6 +216,9 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
   }
 
   async #enableObjectSetsWatcher(objectTypeRids: string[]) {
+    const { batchEnableWatcher } = await import(
+      "../generated/object-set-watcher/ObjectSetWatchService.mjs"
+    );
     return batchEnableWatcher(this.#conjureContext, {
       requests: objectTypeRids,
     });
@@ -209,6 +227,9 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
   async #createTemporaryObjectSet<K extends ObjectTypesFrom<O>>(
     objectSet: ObjectSet<O, K>,
   ) {
+    const { createTemporaryObjectSet } = await import(
+      "../generated/object-set-service/api/ObjectSetService.mjs"
+    );
     // TODO do we need to do something when the subscription expires on the server?
     createTemporaryObjectSet(this.#conjureContext, {
       objectSet: toConjureObjectSet(objectSet),

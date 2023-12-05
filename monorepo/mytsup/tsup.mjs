@@ -26,7 +26,10 @@ export default async (options) => {
       babel({
         config: {
           presets: ["@babel/preset-typescript"],
-          plugins: ["babel-plugin-dev-expression"],
+          plugins: [
+            "babel-plugin-dev-expression",
+            "@babel/plugin-syntax-import-attributes",
+          ],
         },
       }),
     ],
