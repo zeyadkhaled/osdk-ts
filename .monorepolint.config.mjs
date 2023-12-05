@@ -90,13 +90,13 @@ function standardPackageRules(shared) {
         "@osdk/examples.basic.cli",
       ],
       options: {
-        devDependencies: { typescript: "^5.2.2" },
+        devDependencies: { typescript: "^5.3.2" },
       },
     }),
     requireDependency({
       includePackages: ["@osdk/examples.one.dot.one"],
       options: {
-        devDependencies: { typescript: "^4.9.0" },
+        devDependencies: { typescript: "^4.9.5" },
       },
     }),
     packageScript({

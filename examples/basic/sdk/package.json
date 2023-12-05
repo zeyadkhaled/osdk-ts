@@ -30,7 +30,7 @@
     "@osdk/client": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.2"
   },
   "publishConfig": {
     "access": "public"
