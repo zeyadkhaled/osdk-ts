@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-import type { ObjectTypesFrom, OntologyDefinition } from "@osdk/api";
-import type { OsdkObject } from "../OsdkObject";
+export class Deferred<T> {
+  public resolve: (value: T | PromiseLike<T>) => void;
+  public reject: (reason?: any) => void;
+  public promise: Promise<T>;
 
-export interface ObjectSetWatcherEvents<
-  O extends OntologyDefinition<any>,
-  K extends ObjectTypesFrom<O>,
-> {
-  change: Array<OsdkObject<K & string>>;
-  refresh: never;
-}
-
-export type ObjectSetListener<
-  O extends OntologyDefinition<any>,
-  K extends ObjectTypesFrom<O>,
-> = Partial<
-  {
-    [E in keyof ObjectSetWatcherEvents<O, K>]:
-      ObjectSetWatcherEvents<O, K>[E] extends never ? () => void : (
-        data: ObjectSetWatcherEvents<O, K>[E],
-      ) => void;
+  constructor() {
+    this.promise = new Promise<T>((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
   }
->;
+}

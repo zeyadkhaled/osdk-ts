@@ -21,7 +21,12 @@ import {
 } from "@osdk/api";
 import type { ConjureContext } from "conjure-lite";
 import WebSocket from "isomorphic-ws";
+import type { OsdkObject } from "..";
+import { createTemporaryObjectSet } from "../generated/object-set-service/api/ObjectSetService.mjs";
+import type { FoundryObject } from "../generated/object-set-watcher/object/FoundryObject.mjs";
 import { batchEnableWatcher } from "../generated/object-set-watcher/ObjectSetWatchService.mjs";
+import type { StreamMessage } from "../generated/object-set-watcher/StreamMessage.mjs";
+import { Deferred } from "./Deferred";
 import type { ObjectSet } from "./ObjectSet";
 import type { ObjectSetListener } from "./ObjectSetWatcher";
 
@@ -41,7 +46,10 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
 
   #ws: WebSocket | undefined;
   #client: ThinClient<O>;
-  #pendingListeners = new Map<string, ObjectSetListener<O, any>>();
+  #pendingListeners = new Map<
+    string,
+    { deferred: Deferred<() => void>; listener: ObjectSetListener<O, any> }
+  >();
   #listeners = new Map<string, ObjectSetListener<O, any>>();
   #conjureContext: ConjureContext;
 
@@ -81,16 +89,13 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
     // subscribe to object set
     const requestId = crypto.randomUUID();
     const subscribe = {};
-    this.#pendingListeners.set(requestId, listener);
+
+    const deferred = new Deferred<() => void>();
+
+    this.#pendingListeners.set(requestId, { deferred, listener });
     this.#ws?.send(JSON.stringify(subscribe));
 
-    // wait for subscription response
-
-    // return the unsubscribe
-    return () => {
-      // TODO there isn't actually a network call we can send yet
-      // remove the listener
-    };
+    return deferred.promise;
   }
 
   async #ensureWebsocket() {
@@ -111,6 +116,8 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
         this.#notifyCancel();
       });
 
+      this.#ws.addEventListener("message", this.#onMessage);
+
       return new Promise<void>((resolve, reject) => {
         this.#ws!.addEventListener("open", () => {
           resolve();
@@ -119,6 +126,72 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
           reject(new Error(event.toString()));
         });
       });
+    }
+  }
+
+  #onMessage(message: WebSocket.MessageEvent) {
+    const data = JSON.parse(message.data.toString()) as StreamMessage;
+    switch (data.type) {
+      case "objectSetChanged": {
+        const { id: subscriptionId, objects } = data.objectSetChanged;
+        const listener = this.#listeners.get(subscriptionId);
+        listener?.change?.(convertFoundryToOsdkObjects(objects));
+        break;
+      }
+
+      case "refreshObjectSet": {
+        const { id: subscriptionId } = data.refreshObjectSet;
+        const listener = this.#listeners.get(subscriptionId);
+        listener?.refresh?.();
+        break;
+      }
+
+      case "subscribeResponses": {
+        const { id: requestId, responses } = data.subscribeResponses;
+
+        const pendingData = this.#pendingListeners.get(requestId);
+
+        if (pendingData == null) {
+          throw new Error(
+            "Got a subscription response for a requestId we weren't expecting",
+          );
+        }
+
+        const { deferred, listener } = pendingData;
+        this.#pendingListeners.delete(requestId);
+
+        if (responses.length !== 1) {
+          deferred.reject(
+            "Got more than one response but we only expect a single one",
+          );
+        }
+
+        const response = responses[0];
+        switch (response.type) {
+          case "error":
+            deferred.reject(response.error);
+            return;
+          case "qos":
+            deferred.reject(response.qos);
+            return;
+          case "success":
+            const { id: subscriptionId } = response.success;
+            this.#listeners.set(subscriptionId, listener);
+            deferred.resolve(() => {
+              // TODO there isn't actually a network call to unsubscribe the socket yet
+              this.#listeners.delete(subscriptionId);
+            });
+            break;
+          default:
+            const _: never = response;
+            deferred.reject(response);
+        }
+
+        break;
+      }
+
+      default:
+        const _: never = data;
     }
   }
 
@@ -136,10 +209,11 @@ export class WatcherWebsocket<O extends OntologyDefinition<any, any, any>> {
   async #createTemporaryObjectSet<K extends ObjectTypesFrom<O>>(
     objectSet: ObjectSet<O, K>,
   ) {
-    // call temporary from object-set-watcher conjure
+    // TODO do we need to do something when the subscription expires on the server?
     createTemporaryObjectSet(this.#conjureContext, {
       objectSet: toConjureObjectSet(objectSet),
       timeToLive: "ONE_DAY",
+      objectSetFilterContext: { parameterOverrides: {} as Map<any, any> },
     });
     return { objectSetRid: "objectSetRid" };
   }
@@ -166,5 +240,14 @@ function toConjureObjectSet<
   O extends OntologyDefinition<any>,
   K extends ObjectTypesFrom<O>,
 >(objectSet: ObjectSet<O, K>) {
-  return objectset;
+  return undefined as any;
+}
+
+function convertFoundryToOsdkObjects<
+  O extends OntologyDefinition<any>,
+  K extends ObjectTypesFrom<O>,
+>(
+  objects: ReadonlyArray<FoundryObject>,
+): Array<OsdkObject<K & string>> {
+  return [];
 }
