@@ -19,6 +19,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import type { CliCommonArgs } from "./CliCommonArgs.js";
 import auth from "./commands/auth/index.js";
+import ontology from "./commands/ontology/index.js";
 import site from "./commands/site/index.js";
 import typescript from "./commands/typescript/index.js";
 import { ExitProcessError } from "./ExitProcessError.js";
@@ -48,6 +49,7 @@ export async function cli(args: string[] = process.argv) {
           .command(site)
           .command(typescript)
           .command(auth)
+          .command(ontology)
           .demandCommand();
       },
       handler: (_args) => {},

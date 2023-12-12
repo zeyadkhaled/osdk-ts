@@ -19,7 +19,7 @@ import { createFetch } from "./createFetch.mjs";
 
 export function createConjureContext(
   baseUrl: string,
-  servicePath: "/artifacts/api",
+  servicePath: "/artifacts/api" | "/compass/api" | "/control-panel/api",
 ): ConjureContext {
   return {
     fetchFn: createFetch(() => process.env.FOUNDRY_SDK_AUTH_TOKEN as string),
