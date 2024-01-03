@@ -16,13 +16,13 @@
 
 import type { CommandModule } from "yargs";
 import type { CommonOntologyArgs } from "../CommonOntologyArgs.js";
-import type { InitializeOntology } from "./LoginArgs.js";
+import type { PushOntology } from "./PushArgs.js";
 
 export const command: CommandModule<
   CommonOntologyArgs,
-  InitializeOntology
+  PushOntology
 > = {
-  command: "init",
+  command: "push",
   describe: "Initialize your ontology",
   builder: (argv) => {
     return argv
@@ -31,13 +31,13 @@ export const command: CommandModule<
         type: "string",
         demandOption: true,
       })
-      .option("outputDir", {
+      .option("ontologyPath", {
         type: "string",
         demandOption: true,
       });
   },
   handler: async (args) => {
-    const command = await import("./initializeOntology.js");
+    const command = await import("./pushOntology.js");
     await command.default(args);
   },
 };

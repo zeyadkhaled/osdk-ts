@@ -16,7 +16,7 @@
 
 import type { CommonOntologyArgs } from "../CommonOntologyArgs.js";
 
-export interface InitializeOntology extends CommonOntologyArgs {
+export interface PushOntology extends CommonOntologyArgs {
   applicationId: string;
-  outputDir: string;
+  ontologyPath: string;
 }

@@ -18,6 +18,7 @@ import type * as yargs from "yargs";
 import type { CliCommonArgs } from "../../CliCommonArgs.js";
 import type { CommonOntologyArgs } from "./CommonOntologyArgs.js";
 import init from "./initialize/index.js";
+import push from "./push/index.js";
 
 const site: yargs.CommandModule<CliCommonArgs, CommonOntologyArgs> = {
   command: "ontology",
@@ -31,6 +32,7 @@ const site: yargs.CommandModule<CliCommonArgs, CommonOntologyArgs> = {
         },
       })
       .command(init)
+      .command(push)
       .demandCommand();
   },
   handler: async (args) => {

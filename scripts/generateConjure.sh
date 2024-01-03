@@ -56,7 +56,7 @@ function generateConjure() {
 #generateConjure "com.palantir.artifacts" "artifacts-admin-api" "${SCRIPT_DIR}/../packages/cli"
 #generateConjure "com.palantir.artifacts" "artifacts-sites-api" "${SCRIPT_DIR}/../packages/cli"
 #generateConjure "com.palantir.compass" "compass-api" "${SCRIPT_DIR}/../packages/cli"
-generateConjure "com.palantir.controlpanel" "control-panel-api" "${SCRIPT_DIR}/../packages/cli"
+#generateConjure "com.palantir.controlpanel" "control-panel-api" "${SCRIPT_DIR}/../packages/cli"
 
 #generateConjure "com.palantir.object-set-service" "object-set-service-api" "${SCRIPT_DIR}/../packages/client"
 #generateConjure "com.palantir.object-set-watcher" "object-set-watcher-api" "${SCRIPT_DIR}/../packages/client"

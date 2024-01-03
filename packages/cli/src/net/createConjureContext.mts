@@ -19,10 +19,16 @@ import { createFetch } from "./createFetch.mjs";
 
 export function createConjureContext(
   baseUrl: string,
-  servicePath: "/artifacts/api" | "/compass/api" | "/control-panel/api",
+  servicePath:
+    | "/artifacts/api"
+    | "/compass/api"
+    | "/control-panel/api"
+    | "/ontology-metadata/api",
+  tokenProvider: () => string = () =>
+    process.env.FOUNDRY_SDK_AUTH_TOKEN as string,
 ): ConjureContext {
   return {
-    fetchFn: createFetch(() => process.env.FOUNDRY_SDK_AUTH_TOKEN as string),
+    fetchFn: createFetch(tokenProvider),
     baseUrl,
     servicePath,
   };
