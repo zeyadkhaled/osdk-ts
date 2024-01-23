@@ -293,7 +293,7 @@ export type OntologyObjectV2 = { [key: string]: ApiValueType } & {
 
 export function isOntologyObjectV2(o: any): o is OntologyObjectV2 {
   return o && typeof o === "object" && typeof o.__apiName === "string"
-    && o.primaryKey != null;
+    && o.__primaryKey != null;
 }
 
 export type PagedResponse<T> = {
