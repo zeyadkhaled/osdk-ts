@@ -19,8 +19,8 @@ import type { SetOntologyBranchOrganizationMarkingsRequest } from "../SetOntolog
 import type { SetOntologyBranchOrganizationMarkingsResponse } from "../SetOntologyBranchOrganizationMarkingsResponse.js";
 
 /**
- * Manually set the org markings for an ontology branch. This will throw if the stack does
- * not have the `organizationMarkingsRequiredOnOntologyProposals` set to true.
+ * Manually set the org markings for an ontology branch. This will throw if the stack does not
+ * have the `organizationMarkingsRequiredOnOntologyProposals` set to true.
  */
 export async function setOntologyBranchOrganizationMarkings(
   ctx: ConjureContext,

@@ -14,4 +14,16 @@
  * limitations under the License.
  */
 
-export { getRegisteredDomains } from "./SitesDomainRegistryService/getRegisteredDomains.js";
+import type { InterfaceTypeApiName } from "../components/InterfaceTypeApiName";
+import type { InterfaceTypeRid } from "../components/InterfaceTypeRid";
+
+/** The requested interface type is not found, or the client token does not have access to it. */
+export interface InterfaceTypeNotFound {
+  errorCode: "NOT_FOUND";
+  errorName: "InterfaceTypeNotFound";
+  errorInstanceId: string;
+  parameters: {
+    apiName: InterfaceTypeApiName;
+    rid: InterfaceTypeRid;
+  };
+}

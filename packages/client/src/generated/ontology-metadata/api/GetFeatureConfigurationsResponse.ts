@@ -22,4 +22,5 @@ export interface GetFeatureConfigurationsResponse {
   allowGothamTypeMappingUsage: boolean;
   allowTypeRegistryUsage: boolean;
   allowNonRoleEntitiesInProposals: boolean;
+  ontologyProposalsInDefaultOntologyWillBeOrgMarked: boolean;
 }

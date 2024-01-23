@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
-export * as Wire from "./types.js";
+import type { InterfaceType } from "./InterfaceType";
+import type { PageToken } from "./PageToken";
+
+export interface ListInterfaceTypesResponse {
+  nextPageToken?: PageToken;
+  data: Array<InterfaceType>;
+}

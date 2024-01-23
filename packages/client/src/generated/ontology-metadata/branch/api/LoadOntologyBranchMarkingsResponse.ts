@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-import { type ConjureContext, conjureFetch } from "conjure-lite";
-
-/**
- * Get all registered domains regardless of whether they're in use or not.
- */
-export async function getRegisteredDomains(
-  ctx: ConjureContext,
-): Promise<Array<string>> {
-  return conjureFetch(ctx, `/sites/configRegisteredDomains/list`, "GET");
+import type { MarkingId } from "../../api/MarkingId.js";
+export interface LoadOntologyBranchMarkingsResponse {
+  markingIds: Array<MarkingId>;
 }

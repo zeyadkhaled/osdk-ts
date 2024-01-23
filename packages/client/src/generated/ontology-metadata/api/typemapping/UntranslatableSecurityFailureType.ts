@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { type ConjureContext, conjureFetch } from "conjure-lite";
-export async function deleteSiteDeployment(
-  ctx: ConjureContext,
-  repositoryRid: string,
-): Promise<void> {
-  return conjureFetch(ctx, `/sites/admin/${repositoryRid}`, "DELETE");
-}
+export type UntranslatableSecurityFailureType =
+  | "INVALID_MARKINGS_SUMMARY"
+  | "FAILED_DATASOURCE_MARKING_LOAD"
+  | "INACCESSIBLE_DELEGATE"
+  | "UNSUPPORTED_GPS_POLICY"
+  | "UNSUPPORTED_DATASOURCE_IDENTIFIER_TYPE"
+  | "UNHANDLED_TRANSLATION_FAILURE";

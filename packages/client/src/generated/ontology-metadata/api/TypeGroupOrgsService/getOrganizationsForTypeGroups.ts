@@ -15,10 +15,17 @@
  */
 
 import { type ConjureContext, conjureFetch } from "conjure-lite";
-import type { DeploySiteRequest } from "../DeploySiteRequest.js";
-export async function deploySite(
+import type { TypeGroupGetOrganizationsRequest } from "../TypeGroupGetOrganizationsRequest.js";
+import type { TypeGroupGetOrganizationsResponse } from "../TypeGroupGetOrganizationsResponse.js";
+
+/**
+ * Endpoint to batch load organization rids per TypeGroup. The response will only contain entries for
+ * TypeGroupRid(s) paired with Organizations that are visible to the user. At most 500 TypeGroupRids can be
+ * requested in the same request.
+ */
+export async function getOrganizationsForTypeGroups(
   ctx: ConjureContext,
-  deploySiteRequest: DeploySiteRequest,
-): Promise<void> {
-  return conjureFetch(ctx, `/sites/admin/deploy`, "POST", deploySiteRequest);
+  request: TypeGroupGetOrganizationsRequest,
+): Promise<TypeGroupGetOrganizationsResponse> {
+  return conjureFetch(ctx, `/type-groups/orgs/get`, "PUT", request);
 }
