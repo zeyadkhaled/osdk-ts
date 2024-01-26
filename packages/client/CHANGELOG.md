@@ -1,5 +1,28 @@
 # @osdk/client
 
+## 0.4.1
+
+### Patch Changes
+
+- e1a94f22: Revert change to how we generate the built package types
+- Updated dependencies [e1a94f22]
+  - @osdk/shared.net@1.1.1
+  - @osdk/gateway@1.1.1
+  - @osdk/api@1.1.1
+
+## 0.4.0
+
+### Minor Changes
+
+- a0d5e431: Update build to ship packages compliant with @arethetypeswrong/cli
+
+### Patch Changes
+
+- Updated dependencies [a0d5e431]
+  - @osdk/shared.net@1.1.0
+  - @osdk/gateway@1.1.0
+  - @osdk/api@1.1.0
+
 ## 0.3.1
 
 ### Patch Changes

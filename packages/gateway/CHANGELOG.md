@@ -1,5 +1,17 @@
 # @osdk/gateway
 
+## 1.1.1
+
+### Patch Changes
+
+- e1a94f22: Revert change to how we generate the built package types
+
+## 1.1.0
+
+### Minor Changes
+
+- a0d5e431: Update build to ship packages compliant with @arethetypeswrong/cli
+
 ## 1.0.2
 
 ### Patch Changes
