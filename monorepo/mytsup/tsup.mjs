@@ -119,7 +119,7 @@ export default async (options, ourOptions) => {
           for (const entry of publicEntries) {
             fs.writeFileSync(
               path.join(esmDir, "public", `${entry}.d.ts`),
-              `export * from "../types/public/${entry}.js";`,
+              `export * from "../../types/public/${entry}.js";`,
             );
           }
         }
