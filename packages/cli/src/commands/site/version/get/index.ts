@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
-import type { CliCommonArgs } from "../../CliCommonArgs.js";
-import type { ThirdPartyAppRid } from "../../net/ThirdPartyAppRid.js";
+import type { CommandModule } from "yargs";
+import type { CommonSiteArgs } from "../../CommonSiteArgs.js";
 
-export interface CommonSiteArgs extends CliCommonArgs {
-  application: ThirdPartyAppRid;
-  foundryUrl: string;
-  token?: string;
-  tokenFile?: string;
-}
+export const command: CommandModule<
+  CommonSiteArgs,
+  CommonSiteArgs
+> = {
+  command: "get",
+  describe: "Get the currently set live site version",
+  builder: (argv) => {
+    return argv;
+  },
+  handler: async (args) => {
+    const command = await import("./versionGetCommand.mjs");
+    await command.default(args);
+  },
+};
+
+export default command;

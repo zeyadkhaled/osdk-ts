@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import type { CliCommonArgs } from "../../CliCommonArgs.js";
-import type { ThirdPartyAppRid } from "../../net/ThirdPartyAppRid.js";
+import { consola } from "consola";
+import { artifacts } from "../../../../net/index.mjs";
+import type { SiteVersionArgs } from "../siteVersionArgs.js";
 
-export interface CommonSiteArgs extends CliCommonArgs {
-  application: ThirdPartyAppRid;
-  foundryUrl: string;
-  token?: string;
-  tokenFile?: string;
+export default async function versionDeleteCommand(  {  version, application, foundryUrl }: SiteVersionArgs) {
+  await artifacts.SiteAssetArtifactsService.deleteSiteVersion(
+    foundryUrl,
+    application,
+    version,
+  );
+
+  consola.success(
+    `Deleted version ${version} successful`,
+  );
 }

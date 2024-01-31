@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import type { CliCommonArgs } from "../../CliCommonArgs.js";
-import type { ThirdPartyAppRid } from "../../net/ThirdPartyAppRid.js";
+import type { CommonSiteArgs } from "../CommonSiteArgs.js";
 
-export interface CommonSiteArgs extends CliCommonArgs {
-  application: ThirdPartyAppRid;
-  foundryUrl: string;
-  token?: string;
-  tokenFile?: string;
+export interface SiteDeployArgs extends CommonSiteArgs {
+  version?: string;
+  autoVersion?: boolean;
+  directory: string;
+  uploadOnly: boolean;
 }
